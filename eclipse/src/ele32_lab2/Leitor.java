@@ -45,29 +45,38 @@ public class Leitor {
 		binarioCaracter.put(contadorBinario++, letra);
 	}
 	
-	public Boolean[] compactar() throws IOException {
+	public LinkedList<Boolean> compactar() throws IOException {
 		LinkedList<Boolean> lista = new LinkedList<Boolean>();
 		
 		FileInputStream ins = new FileInputStream(arquivo.getPath());
 		InputStreamReader input = new InputStreamReader(ins, "UTF-8");
 		int letraInt = input.read();
 		String contido = "";
+		String ultimaLetraLida = "";
 		String aumentado = "";
 		while (letraInt != -1) {
-			aumentado = new String(Character.toChars(letraInt));
+			ultimaLetraLida = new String(Character.toChars(letraInt));
+			aumentado = ultimaLetraLida;
+			contido = aumentado;
 			while (caractereBinario.containsKey(aumentado)) {
 				contido = aumentado;
 				letraInt = input.read();
-				aumentado += new String(Character.toChars(letraInt));
+				if (letraInt == -1)
+					break;
+				ultimaLetraLida = new String(Character.toChars(letraInt));
+				aumentado += ultimaLetraLida;
 			}
-			acrescentaString(aumentado);
+			System.out.println(contido);
+			if (letraInt == -1)
+				break;
+			System.out.println(escreveBinario(caractereBinario.get(contido), 
+				     quantosBitsRepresenta(contadorBinario)));
 			lista.addAll(escreveBinario(caractereBinario.get(contido), 
-					     quantosBitsRepresenta(contadorBinario)));
-			letraInt = input.read();
+				     quantosBitsRepresenta(contadorBinario)));
+			acrescentaString(aumentado);
 		}
 		input.close();
-		Boolean[] retorno = new Boolean[lista.size()];
-		return retorno;
+		return lista;
 	}
 	
 	

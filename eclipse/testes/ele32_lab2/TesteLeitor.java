@@ -14,11 +14,19 @@ public class TesteLeitor {
 	@Before
 	public void setUp() throws Exception {
 	}
+	
+	@Test
+	public void testeNulo() throws IOException {
+		Leitor l = new Leitor(new File("../textos/testeNulo"));
+		assertEquals(0, l.getContadorBinario());
+	}
 
 	@Test
 	public void testaLeituraSimples() throws IOException {
 		Leitor l = new Leitor(new File("../textos/teste"));
 		assertEquals(10, l.getContadorBinario());
+		assertEquals(10, l.getBinarioCaractere().size());
+		assertEquals(10, l.getCaractereBinario().size());
 		assertEquals("a", l.getBinarioCaractere().get(0));
 		assertEquals("e", l.getBinarioCaractere().get(4));
 		assertEquals(3, (int) l.getCaractereBinario().get("d"));
@@ -59,6 +67,27 @@ public class TesteLeitor {
 		assertEquals(4, l.size());
 	}
 	
+	@Test
+	public void testaCompactacaoUnitaria() throws IOException {
+		Leitor l = new Leitor(new File("../textos/testeUnitario"));
+		assertEquals(1, l.getContadorBinario());
+		
+		LinkedList<Boolean> res = l.compactar();
+		assertEquals(0, res.size());
+	}
+	
+	@Test
+	public void testaCompactacaoDupla() throws IOException {
+		Leitor l = new Leitor(new File("../textos/testeDuplo"));
+		assertEquals(2, l.getContadorBinario());
+		
+		LinkedList<Boolean> res = l.compactar();
+		System.out.println(l.getBinarioCaractere());
+		System.out.println(res);
+		assertEquals(2, res.size());
+		assertEquals(false, res.get(0));
+		assertEquals(true, res.get(1));
+	}
 	
 	
 	
