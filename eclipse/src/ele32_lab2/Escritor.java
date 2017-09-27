@@ -50,7 +50,7 @@ public class Escritor {
 		int quantBits = listaBits.size();
 		int resto = quantBits % 8;
 		int qB = quantBits - resto;
-		saida.write(resto);
+		saida.write((8-resto)%8); // É a quantidade de bits inúteis
 		
 		// Escreve os simbolos em ordem crescente a partir de zero
 		for (int i = 0; i<quantTipos; i++)
@@ -61,6 +61,7 @@ public class Escritor {
 		
 		// Escreve os bits
 		// TODO otimizar isso
+		byte[] bufferSaida = new byte[qB/8];
 		for (int i = 0; i<qB; i+=8) {
 			byte a = (byte) (
 					((listaBits.get(i  )?1:0) << 7) |
@@ -71,12 +72,13 @@ public class Escritor {
 					((listaBits.get(i+5)?1:0) << 2) |
 					((listaBits.get(i+6)?1:0) << 1) |
 					 (listaBits.get(i+7)?1:0));
-			saida.write(a);
+			bufferSaida[i/8] = a;
 		}
+		saida.write(bufferSaida);
 		if (resto > 0) {
 			byte a = 0;
 			for (int i = 0; i<resto; i++) {
-				a |= ((listaBits.get(i)?1:0) << (7-i));
+				a = (byte) (a | ((listaBits.get(qB+i)?1:0) << (7-i)));
 			}
 			saida.write(a);
 		}

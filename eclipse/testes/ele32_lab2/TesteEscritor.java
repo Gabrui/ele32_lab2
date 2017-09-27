@@ -55,5 +55,73 @@ public class TesteEscritor {
 		assertEquals(0b00001010, bytes[10]);
 		ins.close();
 	}
-
+	
+	
+	@Test
+	public void testaBits() throws IOException {
+		LinkedList<Boolean> lista = new LinkedList<>();
+		lista.add(false);
+		lista.add(true);
+		lista.add(false);
+		HashMap<Integer, String> binMap = new HashMap<>();
+		binMap.put(0, "a");
+		binMap.put(1, "b");
+		String ult = "b";
+		Escritor e = new Escritor(binMap, lista, ult);
+		String arquivo = "../resultados/testes/t2";
+		e.escrever(new File(arquivo));
+		
+		byte[] bytes = new byte[5+3+1];
+		FileInputStream ins = new FileInputStream(arquivo);
+		assertEquals(9, ins.read(bytes));
+		assertEquals(-1, ins.read());
+		assertEquals(0, bytes[0]);
+		assertEquals(0, bytes[1]);
+		assertEquals(0, bytes[2]);
+		assertEquals(3, bytes[3]);
+		assertEquals(5, bytes[4]);
+		assertEquals((byte)'a', bytes[5]);
+		assertEquals((byte)'b', bytes[6]);
+		assertEquals((byte)'b', bytes[7]);
+		assertEquals(0b01000000, bytes[8]);
+		ins.close();
+	}
+	
+	@Test
+	public void testaBits2() throws IOException {
+		LinkedList<Boolean> lista = new LinkedList<>();
+		lista.add(false);
+		lista.add(true);
+		lista.add(false);
+		lista.add(false);
+		lista.add(false);
+		lista.add(false);
+		lista.add(true);
+		lista.add(false);
+		lista.add(true);
+		HashMap<Integer, String> binMap = new HashMap<>();
+		binMap.put(0, "a");
+		binMap.put(1, "b");
+		String ult = "b";
+		Escritor e = new Escritor(binMap, lista, ult);
+		String arquivo = "../resultados/testes/t2";
+		e.escrever(new File(arquivo));
+		
+		byte[] bytes = new byte[5+3+2];
+		FileInputStream ins = new FileInputStream(arquivo);
+		assertEquals(10, ins.read(bytes));
+		assertEquals(-1, ins.read());
+		assertEquals(0, bytes[0]);
+		assertEquals(0, bytes[1]);
+		assertEquals(0, bytes[2]);
+		assertEquals(3, bytes[3]);
+		assertEquals(7, bytes[4]);
+		assertEquals((byte)'a', bytes[5]);
+		assertEquals((byte)'b', bytes[6]);
+		assertEquals((byte)'b', bytes[7]);
+		assertEquals((byte)0b01000010, bytes[8]);
+		assertEquals((byte)0b10000000, bytes[9]);
+		ins.close();
+	}
+	
 }

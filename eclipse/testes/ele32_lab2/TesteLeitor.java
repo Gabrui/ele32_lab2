@@ -108,5 +108,34 @@ public class TesteLeitor {
 		
 		assertEquals("d", l.getUltimoCaractere());
 	}
+	
+	@Test
+	public void testaCompactacaoAAAB() throws IOException {
+		Leitor l = new Leitor(new File("../textos/testes/aaab"));
+		assertEquals(2, l.getContadorBinario());
+		
+		LinkedList<Boolean> res = l.compactar();
+		assertEquals(3, res.size());
+		assertEquals(false, res.get(0));
+		assertEquals(true , res.get(1));
+		assertEquals(false, res.get(2));
+		
+		assertEquals("b", l.getUltimoCaractere());
+	}
+	
+	@Test
+	public void testaCompactacaoAaK() throws IOException {
+		Leitor l = new Leitor(new File("../textos/testes/abcd"));
+		assertEquals(11, l.getContadorBinario());
+		
+		LinkedList<Boolean> res = l.compactar();
+		assertEquals(6*4+4*5, res.size());
+		assertEquals(false, res.get(0));
+		assertEquals(false, res.get(1));
+		assertEquals(false, res.get(2));
+		assertEquals(true, res.get(43));
+		
+		assertEquals("k", l.getUltimoCaractere());
+	}
 
 }

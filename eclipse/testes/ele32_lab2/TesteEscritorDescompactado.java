@@ -19,7 +19,7 @@ public class TesteEscritorDescompactado {
 	}
 
 	@Test
-	public void test() throws IOException {
+	public void testeABCD() throws IOException {
 		LinkedList<Boolean> lista = new LinkedList<>();
 		lista.add(false);
 		lista.add(false);

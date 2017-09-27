@@ -8,7 +8,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-
+/**
+ * Escreve o arquivo original, fazendo a descompactação.
+ *
+ */
 public class EscritorDescompactado {
 	
 	private HashMap<Integer, String> binarioCaracterOriginal;
@@ -27,7 +30,11 @@ public class EscritorDescompactado {
 		this.iterador = this.listaBits.listIterator();
 	}
 	
-	
+	/**
+	 * Escreve no arquivo o resultado da descompactação
+	 * @param arquivo
+	 * @throws IOException
+	 */
 	public void escrever(File arquivo) throws IOException {
 		OutputStreamWriter saida = new OutputStreamWriter(new FileOutputStream(arquivo.getPath()), Principal.CODIFICACAO);
 		
@@ -61,7 +68,11 @@ public class EscritorDescompactado {
 		saida.close();
 	}
 
-
+	/**
+	 * Lê a quantidade de bits indicada na lista de bits
+	 * @param quantosBits
+	 * @return Número inteiro lido, correspondente
+	 */
 	private int lerBits(int quantosBits) {
 		int resp = 0;
 		while (quantosBits > 0) {
