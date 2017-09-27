@@ -53,6 +53,7 @@ public class TesteEscritor {
 		assertEquals((byte)'d', bytes[8]);
 		assertEquals((byte)'d', bytes[9]);
 		assertEquals(0b00001010, bytes[10]);
+		ins.close();
 	}
 
 }

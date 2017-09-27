@@ -35,8 +35,6 @@ public class Leitor {
 		String letra = "";
 		while (letraInt != -1) {
 			letra = new String(Character.toChars(letraInt));
-			if (letra.length() > 1)
-				System.out.println("CUIDADO, PERIGO DE ERRO AO DESCOMPACTAR");
 			if (!caractereBinario.containsKey(letra)) {
 				acrescentaString(letra);
 			}
