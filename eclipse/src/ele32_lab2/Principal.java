@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class Principal {
+	public static final String CODIFICACAO = "UTF-8";
 	
 	HashMap<Integer, Integer> binarioCaracter;	
 	HashMap<Integer, Integer> caractereBinario;

@@ -74,7 +74,9 @@ public class TesteLeitor {
 		
 		LinkedList<Boolean> res = l.compactar();
 		assertEquals(0, res.size());
+		assertEquals("a", l.getUltimoCaractere());
 	}
+	
 	
 	@Test
 	public void testaCompactacaoDupla() throws IOException {
@@ -82,14 +84,29 @@ public class TesteLeitor {
 		assertEquals(2, l.getContadorBinario());
 		
 		LinkedList<Boolean> res = l.compactar();
-		System.out.println(l.getBinarioCaractere());
-		System.out.println(res);
-		assertEquals(2, res.size());
+		assertEquals(1, res.size());
 		assertEquals(false, res.get(0));
-		assertEquals(true, res.get(1));
+		assertEquals("b", l.getUltimoCaractere());
 	}
 	
 	
-	
+	@Test
+	public void testaCompactacaoABCD() throws IOException {
+		Leitor l = new Leitor(new File("../textos/testeABCD"));
+		assertEquals(4, l.getContadorBinario());
+		
+		LinkedList<Boolean> res = l.compactar();
+		assertEquals(8, res.size());
+		assertEquals(false, res.get(0));
+		assertEquals(false, res.get(1));
+		assertEquals(false, res.get(2));
+		assertEquals(false, res.get(3));
+		assertEquals(true , res.get(4));
+		assertEquals(false, res.get(3));
+		assertEquals(true , res.get(4));
+		assertEquals(false, res.get(3));
+		
+		assertEquals("d", l.getUltimoCaractere());
+	}
 
 }

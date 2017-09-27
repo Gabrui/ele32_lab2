@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -12,7 +11,12 @@ public class Leitor {
 	
 	private HashMap<Integer, String> binarioCaracter;	
 	private HashMap<String, Integer> caractereBinario;
+	private HashMap<Integer, String> binarioCaracterOriginal;	
+	private HashMap<String, Integer> caractereBinarioOriginal;
 	private int contadorBinario;
+	private String ultimoCaractere;
+
+
 	private File arquivo;
 	
 	public Leitor(File arquivo) throws IOException {
@@ -26,16 +30,21 @@ public class Leitor {
 	
 	private void inicializarDics() throws IOException {
 		FileInputStream ins = new FileInputStream(arquivo.getPath());
-		InputStreamReader input = new InputStreamReader(ins, "UTF-8");
+		InputStreamReader input = new InputStreamReader(ins, Principal.CODIFICACAO);
 		int letraInt = input.read();
 		String letra = "";
 		while (letraInt != -1) {
 			letra = new String(Character.toChars(letraInt));
+			if (letra.length() > 1)
+				System.out.println("CUIDADO, PERIGO DE ERRO AO DESCOMPACTAR");
 			if (!caractereBinario.containsKey(letra)) {
 				acrescentaString(letra);
 			}
 			letraInt = input.read(); 
 		}
+		ultimoCaractere = letra;
+		caractereBinarioOriginal = getCaractereBinario();
+		binarioCaracterOriginal = getBinarioCaractere();
 		input.close();
 	}
 
@@ -45,11 +54,12 @@ public class Leitor {
 		binarioCaracter.put(contadorBinario++, letra);
 	}
 	
+	
 	public LinkedList<Boolean> compactar() throws IOException {
 		LinkedList<Boolean> lista = new LinkedList<Boolean>();
-		
+		//HashMap<String, Integer> caractereBinario = getBinarioCaractere();
 		FileInputStream ins = new FileInputStream(arquivo.getPath());
-		InputStreamReader input = new InputStreamReader(ins, "UTF-8");
+		InputStreamReader input = new InputStreamReader(ins, Principal.CODIFICACAO);
 		int letraInt = input.read();
 		String contido = "";
 		String ultimaLetraLida = "";
@@ -66,13 +76,10 @@ public class Leitor {
 				ultimaLetraLida = new String(Character.toChars(letraInt));
 				aumentado += ultimaLetraLida;
 			}
-			System.out.println(contido);
 			if (letraInt == -1)
 				break;
-			System.out.println(escreveBinario(caractereBinario.get(contido), 
-				     quantosBitsRepresenta(contadorBinario)));
 			lista.addAll(escreveBinario(caractereBinario.get(contido), 
-				     quantosBitsRepresenta(contadorBinario)));
+				     quantosBitsRepresenta(contadorBinario-1)));
 			acrescentaString(aumentado);
 		}
 		input.close();
@@ -91,8 +98,9 @@ public class Leitor {
 		return lista;
 	}
 	
+	
 	public static int quantosBitsRepresenta(int numero) {
-		if (numero == 0)
+		if (numero <= 0)
 			return 1;
 		int qBits = 0;
 		for (int num = numero; num > 0; qBits++) {
@@ -106,14 +114,34 @@ public class Leitor {
 		return contadorBinario;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public HashMap<Integer, Integer> getBinarioCaractere() {
-		return (HashMap<Integer, Integer>) binarioCaracter.clone();
+	
+	public String getUltimoCaractere() {
+		return ultimoCaractere;
 	}
 	
+	
+	
 	@SuppressWarnings("unchecked")
-	public HashMap<Integer, Integer> getCaractereBinario() {
-		return (HashMap<Integer, Integer>) caractereBinario.clone();
+	public HashMap<Integer, String> getBinarioCaractere() {
+		return (HashMap<Integer, String>) binarioCaracter.clone();
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Integer> getCaractereBinario() {
+		return (HashMap<String, Integer>) caractereBinario.clone();
+	}
+	
+
+
+	public HashMap<Integer, String> getBinarioCaracterOriginal() {
+		return binarioCaracterOriginal;
+	}
+
+
+	public HashMap<String, Integer> getCaractereBinarioOriginal() {
+		return caractereBinarioOriginal;
 	}
 
 }
