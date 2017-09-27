@@ -81,6 +81,7 @@ public class Leitor {
 			acrescentaString(aumentado);
 		}
 		input.close();
+		
 		return lista;
 	}
 	

@@ -55,7 +55,8 @@ public class EscritorDescompactado {
 			penultimo = ultimo;
 			ultimo = binarioCaracter.get(endereco);
 			if (ultimo == null) {
-				ultimo = penultimo + new String(Character.toChars(penultimo.codePointAt(0)));
+				System.out.println(endereco);
+				ultimo = penultimo + penultimo.substring(0, 1); //new String(Character.toChars(penultimo.codePointAt(0)));
 				binarioCaracter.put(quant-1, ultimo);
 			} else {
 				binarioCaracter.put(quant-1, penultimo + ultimo);
@@ -63,7 +64,7 @@ public class EscritorDescompactado {
 			saida.write(ultimo);
 			quant++;
 		}
-		
+		binarioCaracter.put(quant-1, ultimo+ultimoCaractere);
 		saida.write(ultimoCaractere);
 		saida.close();
 	}
@@ -82,5 +83,13 @@ public class EscritorDescompactado {
 			quantosBits--;
 		}
 		return resp;
+	}
+
+	public HashMap<Integer, String> getBinarioCaracterOriginal() {
+		return binarioCaracterOriginal;
+	}
+
+	public HashMap<Integer, String> getBinarioCaracter() {
+		return binarioCaracter;
 	}
 }

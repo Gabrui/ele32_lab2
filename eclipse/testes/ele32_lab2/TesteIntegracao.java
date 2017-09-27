@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,12 +48,29 @@ public class TesteIntegracao {
 
 	private void compactarDescompactar(String original, String compactado, String descompactado) throws IOException {
 		Leitor l = new Leitor(new File(original));
-		Escritor e = new Escritor(l.getBinarioCaracterOriginal(), l.compactar(), l.getUltimoCaractere());
+		LinkedList<Boolean> listaBitsOriginal = l.compactar();
+		HashMap<Integer, String> binarioCaractereOriginal = l.getBinarioCaracterOriginal();
+		HashMap<Integer, String> binarioCaractereFinalOriginal = l.getBinarioCaractere();
+		String ultimoCaractereOriginal = l.getUltimoCaractere();
+		
+		Escritor e = new Escritor(binarioCaractereOriginal, listaBitsOriginal, ultimoCaractereOriginal);
 		e.escrever(new File(compactado));
 
+		
 		LeitorCompactado lc = new LeitorCompactado(new File(compactado));
-		EscritorDescompactado ec = new EscritorDescompactado(lc.getBinarioCaractere(), lc.getListaBits(), lc.getUltimoCaractere());
+		LinkedList<Boolean> listaBits = lc.getListaBits();
+		HashMap<Integer, String> binarioCaractere = lc.getBinarioCaractere();
+		String ultimoCaractere = lc.getUltimoCaractere();
+		
+		assertEquals(listaBitsOriginal, listaBits);
+		assertEquals(binarioCaractereOriginal, binarioCaractere);
+		assertEquals(ultimoCaractereOriginal, ultimoCaractere);
+		
+		EscritorDescompactado ec = new EscritorDescompactado(binarioCaractere, listaBits, ultimoCaractere);
 		ec.escrever(new File(descompactado));
+		HashMap<Integer, String> binarioCaractereFinal = ec.getBinarioCaracter();
+		
+		assertEquals(binarioCaractereFinalOriginal, binarioCaractereFinal);
 		
 		String esperado = new String(Files.readAllBytes(Paths.get(original)));
 		String resultado = new String(Files.readAllBytes(Paths.get(descompactado)));

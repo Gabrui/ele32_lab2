@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PrimitiveIterator.OfInt;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 public class LeitorCompactado {
 	
 	private HashMap<Integer, String> binarioCaracter;	
@@ -42,7 +44,7 @@ public class LeitorCompactado {
 			if (a.hasNext()) // Se não for a última
 				acrescentaString(ultimoCaractere);
 		}
-		
+
 		// Gera uma lista de booleans
 		int lido = ins.read();
 		int ultLido = ins.read();
