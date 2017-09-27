@@ -1,23 +1,30 @@
 package ele32_lab2;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
 
 public class Principal {
 	public static final String CODIFICACAO = "UTF-8";
 	
-	HashMap<Integer, Integer> binarioCaracter;	
-	HashMap<Integer, Integer> caractereBinario;
 
-	public static void main(String[] args) {
-		// Abre todos os arquivos dessa pasta
-		File[] files = new File("../textos/").listFiles();
+	public static void main(String[] args) throws IOException {
+
+		// Compactando
+		File[] arquivos = new File("../textos/misc/").listFiles();
+		for (File arquivo : arquivos) {
+			System.out.println("Compactando: "+arquivo.getName());
+			Leitor l = new Leitor(arquivo);
+			Escritor e = new Escritor(l.getBinarioCaracterOriginal(), l.compactar(), l.getUltimoCaractere());
+			e.escrever(new File("../resultados/miscCompactado/"+arquivo.getName()));
+		}
 		
-		for (File file : files) {
-			//read_file(file);
+		// Descompactando
+		arquivos = new File("../resultados/miscCompactado/").listFiles();
+		for (File arquivo : arquivos) {
+			System.out.println("Descompactando: "+arquivo.getName());
+			LeitorCompactado l = new LeitorCompactado(arquivo);
+			EscritorDescompactado e = new EscritorDescompactado(l.getBinarioCaractere(), l.getListaBits(), l.getUltimoCaractere());
+			e.escrever(new File("../resultados/misc/"+arquivo.getName()));
 		}
 	}
 	

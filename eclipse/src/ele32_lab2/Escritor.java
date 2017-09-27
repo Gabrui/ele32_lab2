@@ -60,6 +60,7 @@ public class Escritor {
 		saida.write(ultimoCaractere.getBytes(Charset.forName(Principal.CODIFICACAO)));
 		
 		// Escreve os bits
+		// TODO otimizar isso
 		for (int i = 0; i<qB; i+=8) {
 			byte a = (byte) (
 					((listaBits.get(i  )?1:0) << 7) |

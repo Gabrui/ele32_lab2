@@ -17,13 +17,13 @@ public class TesteLeitor {
 	
 	@Test
 	public void testeNulo() throws IOException {
-		Leitor l = new Leitor(new File("../textos/testeNulo"));
+		Leitor l = new Leitor(new File("../textos/testes/testeNulo"));
 		assertEquals(0, l.getContadorBinario());
 	}
 
 	@Test
 	public void testaLeituraSimples() throws IOException {
-		Leitor l = new Leitor(new File("../textos/teste"));
+		Leitor l = new Leitor(new File("../textos/testes/teste"));
 		assertEquals(10, l.getContadorBinario());
 		assertEquals(10, l.getBinarioCaractere().size());
 		assertEquals(10, l.getCaractereBinario().size());
@@ -69,7 +69,7 @@ public class TesteLeitor {
 	
 	@Test
 	public void testaCompactacaoUnitaria() throws IOException {
-		Leitor l = new Leitor(new File("../textos/testeUnitario"));
+		Leitor l = new Leitor(new File("../textos/testes/testeUnitario"));
 		assertEquals(1, l.getContadorBinario());
 		
 		LinkedList<Boolean> res = l.compactar();
@@ -80,7 +80,7 @@ public class TesteLeitor {
 	
 	@Test
 	public void testaCompactacaoDupla() throws IOException {
-		Leitor l = new Leitor(new File("../textos/testeDuplo"));
+		Leitor l = new Leitor(new File("../textos/testes/testeDuplo"));
 		assertEquals(2, l.getContadorBinario());
 		
 		LinkedList<Boolean> res = l.compactar();
@@ -92,7 +92,7 @@ public class TesteLeitor {
 	
 	@Test
 	public void testaCompactacaoABCD() throws IOException {
-		Leitor l = new Leitor(new File("../textos/testeABCD"));
+		Leitor l = new Leitor(new File("../textos/testes/testeABCD"));
 		assertEquals(4, l.getContadorBinario());
 		
 		LinkedList<Boolean> res = l.compactar();
