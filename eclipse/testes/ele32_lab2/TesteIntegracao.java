@@ -38,6 +38,16 @@ public class TesteIntegracao {
 	
 
 	@Test
+	public void testeAeB() throws IOException {
+		String original = "../textos/testes/abs";
+		String compactado = "../resultados/testes/absCompac";
+		String descompactado = "../resultados/testes/abs";
+		
+		compactarDescompactar(original, compactado, descompactado);
+	}
+	
+	
+	@Test
 	public void testeIngles() throws IOException {
 		String original = "../textos/testes/ingles";
 		String compactado = "../resultados/testes/inglesCompac";

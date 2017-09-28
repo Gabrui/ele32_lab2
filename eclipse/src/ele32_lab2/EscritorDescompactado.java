@@ -55,11 +55,10 @@ public class EscritorDescompactado {
 			penultimo = ultimo;
 			ultimo = binarioCaracter.get(endereco);
 			if (ultimo == null) {
-				System.out.println(endereco);
-				ultimo = penultimo + penultimo.substring(0, 1); //new String(Character.toChars(penultimo.codePointAt(0)));
+				ultimo = penultimo + primeiroChar(penultimo);
 				binarioCaracter.put(quant-1, ultimo);
 			} else {
-				binarioCaracter.put(quant-1, penultimo + ultimo);
+				binarioCaracter.put(quant-1, penultimo + primeiroChar(ultimo));
 			}
 			saida.write(ultimo);
 			quant++;
@@ -67,6 +66,10 @@ public class EscritorDescompactado {
 		binarioCaracter.put(quant-1, ultimo+ultimoCaractere);
 		saida.write(ultimoCaractere);
 		saida.close();
+	}
+	
+	public static String primeiroChar (String s) {
+		return new String(Character.toChars(s.codePointAt(0)));
 	}
 
 	/**
