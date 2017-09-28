@@ -63,8 +63,8 @@ public class EscritorDescompactado {
 			saida.write(ultimo);
 			quant++;
 		}
-		binarioCaracter.put(quant-1, ultimo+ultimoCaractere);
-		saida.write(ultimoCaractere);
+		//binarioCaracter.put(quant-1, ultimo+ultimoCaractere);
+		//saida.write(ultimoCaractere);
 		saida.close();
 	}
 	

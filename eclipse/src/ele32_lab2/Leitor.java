@@ -74,11 +74,10 @@ public class Leitor {
 				ultimaLetraLida = new String(Character.toChars(letraInt));
 				aumentado += ultimaLetraLida;
 			}
-			if (letraInt == -1)
-				break;
 			lista.addAll(escreveBinario(caractereBinario.get(contido), 
 				     quantosBitsRepresenta(contadorBinario-1)));
-			acrescentaString(aumentado);
+			if (letraInt != -1)
+				acrescentaString(aumentado);
 		}
 		input.close();
 		

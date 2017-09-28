@@ -62,7 +62,7 @@ public class TesteIntegracao {
 		String compactado = "../resultados/testes/alemaoCompac";
 		String descompactado = "../resultados/testes/alemao";
 		
-		//compactarDescompactar(original, compactado, descompactado);
+		compactarDescompactar(original, compactado, descompactado);
 	}
 
 	private void compactarDescompactar(String original, String compactado, String descompactado) throws IOException {
