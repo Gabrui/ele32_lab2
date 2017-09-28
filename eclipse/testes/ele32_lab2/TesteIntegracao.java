@@ -55,6 +55,15 @@ public class TesteIntegracao {
 		
 		compactarDescompactar(original, compactado, descompactado);
 	}
+	
+	@Test
+	public void testeAlemao() throws IOException {
+		String original = "../textos/testes/alemao";
+		String compactado = "../resultados/testes/alemaoCompac";
+		String descompactado = "../resultados/testes/alemao";
+		
+		//compactarDescompactar(original, compactado, descompactado);
+	}
 
 	private void compactarDescompactar(String original, String compactado, String descompactado) throws IOException {
 		Leitor l = new Leitor(new File(original));
@@ -62,7 +71,7 @@ public class TesteIntegracao {
 		HashMap<Integer, String> binarioCaractereOriginal = l.getBinarioCaracterOriginal();
 		HashMap<Integer, String> binarioCaractereFinalOriginal = l.getBinarioCaractere();
 		String ultimoCaractereOriginal = l.getUltimoCaractere();
-		
+		System.out.println(listaBitsOriginal.size());
 		Escritor e = new Escritor(binarioCaractereOriginal, listaBitsOriginal, ultimoCaractereOriginal);
 		e.escrever(new File(compactado));
 
@@ -80,7 +89,10 @@ public class TesteIntegracao {
 		ec.escrever(new File(descompactado));
 		HashMap<Integer, String> binarioCaractereFinal = ec.getBinarioCaracter();
 		
-		assertEquals(binarioCaractereFinalOriginal, binarioCaractereFinal);
+		int tam = binarioCaractereFinal.size();
+		for (int i=0; i<tam; i++)
+			assertEquals(binarioCaractereFinalOriginal.get(i), binarioCaractereFinal.get(i));
+		//assertEquals(binarioCaractereFinalOriginal, binarioCaractereFinal);
 		
 		String esperado = new String(Files.readAllBytes(Paths.get(original)));
 		String resultado = new String(Files.readAllBytes(Paths.get(descompactado)));

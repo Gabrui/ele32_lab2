@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.ListIterator;
+
 
 /**
  * Responsável por escrever um arquivo em binário, com o cabeçalho correto
@@ -37,7 +39,7 @@ public class Escritor {
 	 */
 	public void escrever(File arquivo) throws IOException {
 		FileOutputStream saida = new FileOutputStream(arquivo.getPath());
-		
+		System.out.println("escrevendo cabeçalho");
 		// Escreve a quantidade de bytes que os simbolos ocupam
 		int quantTipos = binarioCaracterOriginal.size();
 		int quantBytes = 0;
@@ -58,27 +60,30 @@ public class Escritor {
 		
 		// Escreve o último símbolo
 		saida.write(ultimoCaractere.getBytes(Charset.forName(Principal.CODIFICACAO)));
-		
+		System.out.println("escrevendo bits");
 		// Escreve os bits
 		// TODO otimizar isso
-		byte[] bufferSaida = new byte[qB/8];
-		for (int i = 0; i<qB; i+=8) {
-			byte a = (byte) (
-					((listaBits.get(i  )?1:0) << 7) |
-					((listaBits.get(i+1)?1:0) << 6) |
-					((listaBits.get(i+2)?1:0) << 5) |
-					((listaBits.get(i+3)?1:0) << 4) |
-					((listaBits.get(i+4)?1:0) << 3) |
-					((listaBits.get(i+5)?1:0) << 2) |
-					((listaBits.get(i+6)?1:0) << 1) |
-					 (listaBits.get(i+7)?1:0));
-			bufferSaida[i/8] = a;
+		int qBytes = qB/8;
+		int a = 0;
+		byte[] bufferSaida = new byte[qBytes];
+		ListIterator<Boolean> iterador = listaBits.listIterator();
+		for (int i = 0, j=0; i<qBytes; i++) {
+			j = 8;
+			a = 0;
+			while (j > 0) {
+				a = a << 1;
+				if (iterador.next())
+					a++;
+				j--;
+			}
+			bufferSaida[i] = (byte) a;
 		}
+		System.out.println("pronto");
 		saida.write(bufferSaida);
 		if (resto > 0) {
-			byte a = 0;
+			a = 0;
 			for (int i = 0; i<resto; i++) {
-				a = (byte) (a | ((listaBits.get(qB+i)?1:0) << (7-i)));
+				a = (a | ((listaBits.get(qB+i)?1:0) << (7-i)));
 			}
 			saida.write(a);
 		}
