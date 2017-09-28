@@ -17,6 +17,11 @@ public class Escritor {
 	private HashMap<Integer, String> binarioCaracterOriginal;
 	private LinkedList<Boolean> listaBits;
 	
+	/**
+	 * Precisa apenas do hashmap inicial e da sequência de bits para escrever.
+	 * @param binarioCaracterOriginal HashMap primitivo de inteiro para strings unitárias
+	 * @param listaBits Lista de booleans que representa os bits a serem escritos
+	 */
 	public Escritor(HashMap<Integer, String> binarioCaracterOriginal, LinkedList<Boolean> listaBits) {
 		this.binarioCaracterOriginal = binarioCaracterOriginal;
 		this.listaBits = listaBits;
@@ -81,7 +86,12 @@ public class Escritor {
 		saida.close();
 	}
 	
-	
+	/**
+	 * Converte um inteiro em um vetor de 4 bytes, formato BigEndian,
+	 * isto é, primeiro vem os mais significativos e no final os menos.
+	 * @param valor Inteiro a ser convertido
+	 * @return Vetor de 4 bytes
+	 */
 	public static byte[] inteiroParaBytes (int valor) {
 	    return new byte[] {
 	            (byte) (valor >> 24),

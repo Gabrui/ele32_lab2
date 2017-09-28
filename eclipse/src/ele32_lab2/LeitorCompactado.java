@@ -8,7 +8,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PrimitiveIterator.OfInt;
 
-
+/**
+ * Lê um arquivo compactado (binário), gerando o hashmap primitivo original
+ * e uma lista de booleans (bits)
+ */
 public class LeitorCompactado {
 	
 	private HashMap<Integer, String> binarioCaracter;	

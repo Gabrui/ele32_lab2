@@ -28,7 +28,7 @@ public class EscritorDescompactado {
 	}
 	
 	/**
-	 * Escreve no arquivo o resultado da descompactação
+	 * Escreve no arquivo o resultado da descompactação, altera o dicionário, não chamar duas vezes.
 	 * @param arquivo
 	 * @throws IOException
 	 */
@@ -64,6 +64,14 @@ public class EscritorDescompactado {
 		saida.close();
 	}
 	
+	/**
+	 * Retorna o primeiro caractere de uma String,
+	 * o cuidado a ser tomado é que o primeiro caractere não necessariamente é o primeiro char
+	 * e pode ser os dois, já que um char é UTF-16 e caracteres chineses são representados com mais
+	 * de um char.
+	 * @param s
+	 * @return
+	 */
 	public static String primeiroChar (String s) {
 		return new String(Character.toChars(s.codePointAt(0)));
 	}
