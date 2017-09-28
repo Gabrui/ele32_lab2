@@ -29,13 +29,15 @@ public class TesteEscritorDescompactado {
 		lista.add(false);
 		lista.add(true);
 		lista.add(false);
+		lista.add(false);
+		lista.add(true);
+		lista.add(true);
 		HashMap<Integer, String> binMap = new HashMap<>();
 		binMap.put(0, "a");
 		binMap.put(1, "b");
 		binMap.put(2, "c");
 		binMap.put(3, "d");
-		String ult = "d";
-		EscritorDescompactado e = new EscritorDescompactado(binMap, lista, ult);
+		EscritorDescompactado e = new EscritorDescompactado(binMap, lista);
 		String arquivo = "../resultados/testes/tdes1";
 		e.escrever(new File(arquivo));
 		

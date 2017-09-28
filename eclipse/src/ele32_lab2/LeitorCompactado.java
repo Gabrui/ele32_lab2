@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PrimitiveIterator.OfInt;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 public class LeitorCompactado {
 	
@@ -16,7 +15,6 @@ public class LeitorCompactado {
 	private HashMap<String, Integer> caractereBinario;
 	private LinkedList<Boolean> listaBits;
 	private int contadorBinario;
-	private String ultimoCaractere;
 	
 	public LeitorCompactado(File arquivo) throws IOException {
 		binarioCaracter = new HashMap<Integer, String>();
@@ -39,11 +37,8 @@ public class LeitorCompactado {
 		ins.read(simbolos);
 		String s = new String(simbolos, Charset.forName(Principal.CODIFICACAO));
 		OfInt a = s.codePoints().iterator();
-		while (a.hasNext()) {
-			ultimoCaractere = new String(Character.toChars(a.next()));
-			if (a.hasNext()) // Se não for a última
-				acrescentaString(ultimoCaractere);
-		}
+		while (a.hasNext())
+			acrescentaString(new String(Character.toChars(a.next())));
 
 		// Gera uma lista de booleans
 		int lido = ins.read();
@@ -70,11 +65,6 @@ public class LeitorCompactado {
 	
 	public int getContadorBinario() {
 		return contadorBinario;
-	}
-	
-	
-	public String getUltimoCaractere() {
-		return ultimoCaractere;
 	}
 	
 	

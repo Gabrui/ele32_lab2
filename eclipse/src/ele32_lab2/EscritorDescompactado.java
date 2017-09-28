@@ -17,16 +17,13 @@ public class EscritorDescompactado {
 	private HashMap<Integer, String> binarioCaracterOriginal;
 	private HashMap<Integer, String> binarioCaracter;
 	private LinkedList<Boolean> listaBits;
-	private String ultimoCaractere;
 	private ListIterator<Boolean> iterador;
 
 	@SuppressWarnings("unchecked")
-	public EscritorDescompactado(HashMap<Integer, String> binarioCaracterOriginal, LinkedList<Boolean> listaBits,
-			String ultimoCaractere) {
+	public EscritorDescompactado(HashMap<Integer, String> binarioCaracterOriginal, LinkedList<Boolean> listaBits) {
 		this.binarioCaracterOriginal = binarioCaracterOriginal;
 		this.binarioCaracter = (HashMap<Integer, String>) this.binarioCaracterOriginal.clone();
 		this.listaBits = listaBits;
-		this.ultimoCaractere = ultimoCaractere;
 		this.iterador = this.listaBits.listIterator();
 	}
 	
@@ -63,8 +60,7 @@ public class EscritorDescompactado {
 			saida.write(ultimo);
 			quant++;
 		}
-		//binarioCaracter.put(quant-1, ultimo+ultimoCaractere);
-		//saida.write(ultimoCaractere);
+		
 		saida.close();
 	}
 	

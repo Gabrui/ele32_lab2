@@ -14,7 +14,6 @@ public class Leitor {
 	private HashMap<Integer, String> binarioCaracterOriginal;	
 	private HashMap<String, Integer> caractereBinarioOriginal;
 	private int contadorBinario;
-	private String ultimoCaractere;
 
 
 	private File arquivo;
@@ -40,7 +39,6 @@ public class Leitor {
 			}
 			letraInt = input.read(); 
 		}
-		ultimoCaractere = letra;
 		caractereBinarioOriginal = getCaractereBinario();
 		binarioCaracterOriginal = getBinarioCaractere();
 		input.close();
@@ -110,11 +108,6 @@ public class Leitor {
 
 	public int getContadorBinario() {
 		return contadorBinario;
-	}
-	
-	
-	public String getUltimoCaractere() {
-		return ultimoCaractere;
 	}
 	
 	

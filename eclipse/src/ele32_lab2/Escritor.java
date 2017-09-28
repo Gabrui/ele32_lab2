@@ -16,22 +16,18 @@ public class Escritor {
 
 	private HashMap<Integer, String> binarioCaracterOriginal;
 	private LinkedList<Boolean> listaBits;
-	private String ultimoCaractere;
 	
-	public Escritor(HashMap<Integer, String> binarioCaracterOriginal, LinkedList<Boolean> listaBits,
-			String ultimoCaractere) {
+	public Escritor(HashMap<Integer, String> binarioCaracterOriginal, LinkedList<Boolean> listaBits) {
 		this.binarioCaracterOriginal = binarioCaracterOriginal;
 		this.listaBits = listaBits;
-		this.ultimoCaractere = ultimoCaractere;
 	}
 	
 	/**
 	 * -------- CABEÇALHO
 	 * Primeiro escreve um int que representa a quantidade de bytes que a lista de simbolos ocupa,
-	 * 		isto é, todos os simbolos em ordem crescente e o último símbolo.
+	 * 		isto é, todos os simbolos em ordem crescente.
 	 * depois um byte que representa a quantidade de bits mortos no final do arquivo.
 	 * os símbolos em ordem crescente, começando de 0,
-	 * o último síbolo,
 	 * ---------
 	 * a sequência de bits.
 	 * @param arquivo
@@ -39,13 +35,12 @@ public class Escritor {
 	 */
 	public void escrever(File arquivo) throws IOException {
 		FileOutputStream saida = new FileOutputStream(arquivo.getPath());
-		System.out.println("escrevendo cabeçalho");
+
 		// Escreve a quantidade de bytes que os simbolos ocupam
 		int quantTipos = binarioCaracterOriginal.size();
 		int quantBytes = 0;
 		for (int i = 0; i<quantTipos; i++)
 			quantBytes += binarioCaracterOriginal.get(i).getBytes(Charset.forName(Principal.CODIFICACAO)).length;
-		quantBytes += ultimoCaractere.getBytes(Charset.forName(Principal.CODIFICACAO)).length;
 		saida.write(inteiroParaBytes(quantBytes));
 		
 		// Escreve a quantidade de bits
@@ -58,11 +53,7 @@ public class Escritor {
 		for (int i = 0; i<quantTipos; i++)
 			saida.write(binarioCaracterOriginal.get(i).getBytes(Charset.forName(Principal.CODIFICACAO)));
 		
-		// Escreve o último símbolo
-		saida.write(ultimoCaractere.getBytes(Charset.forName(Principal.CODIFICACAO)));
-		System.out.println("escrevendo bits");
-		// Escreve os bits
-		// TODO otimizar isso
+		// Escreve os bits, foi otimizado, precisa ser melhor?
 		int qBytes = qB/8;
 		int a = 0;
 		byte[] bufferSaida = new byte[qBytes];
@@ -78,7 +69,7 @@ public class Escritor {
 			}
 			bufferSaida[i] = (byte) a;
 		}
-		System.out.println("pronto");
+
 		saida.write(bufferSaida);
 		if (resto > 0) {
 			a = 0;

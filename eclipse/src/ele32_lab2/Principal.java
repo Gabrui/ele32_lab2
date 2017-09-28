@@ -14,7 +14,7 @@ public class Principal {
 		for (File arquivo : arquivos) {
 			System.out.println("Compactando: "+arquivo.getName());
 			Leitor l = new Leitor(arquivo);
-			Escritor e = new Escritor(l.getBinarioCaracterOriginal(), l.compactar(), l.getUltimoCaractere());
+			Escritor e = new Escritor(l.getBinarioCaracterOriginal(), l.compactar());
 			e.escrever(new File("../resultados/miscCompactado/"+arquivo.getName()));
 		}
 		
@@ -23,7 +23,7 @@ public class Principal {
 		for (File arquivo : arquivos) {
 			System.out.println("Descompactando: "+arquivo.getName());
 			LeitorCompactado l = new LeitorCompactado(arquivo);
-			EscritorDescompactado e = new EscritorDescompactado(l.getBinarioCaractere(), l.getListaBits(), l.getUltimoCaractere());
+			EscritorDescompactado e = new EscritorDescompactado(l.getBinarioCaractere(), l.getListaBits());
 			e.escrever(new File("../resultados/misc/"+arquivo.getName()));
 		}
 	}

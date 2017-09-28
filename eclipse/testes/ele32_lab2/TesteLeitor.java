@@ -73,8 +73,7 @@ public class TesteLeitor {
 		assertEquals(1, l.getContadorBinario());
 		
 		LinkedList<Boolean> res = l.compactar();
-		assertEquals(0, res.size());
-		assertEquals("a", l.getUltimoCaractere());
+		assertEquals(1, res.size());
 	}
 	
 	
@@ -84,9 +83,8 @@ public class TesteLeitor {
 		assertEquals(2, l.getContadorBinario());
 		
 		LinkedList<Boolean> res = l.compactar();
-		assertEquals(1, res.size());
+		assertEquals(3, res.size());
 		assertEquals(false, res.get(0));
-		assertEquals("b", l.getUltimoCaractere());
 	}
 	
 	
@@ -96,17 +94,18 @@ public class TesteLeitor {
 		assertEquals(4, l.getContadorBinario());
 		
 		LinkedList<Boolean> res = l.compactar();
-		assertEquals(8, res.size());
+		assertEquals(11, res.size());
 		assertEquals(false, res.get(0));
 		assertEquals(false, res.get(1));
 		assertEquals(false, res.get(2));
 		assertEquals(false, res.get(3));
 		assertEquals(true , res.get(4));
-		assertEquals(false, res.get(3));
-		assertEquals(true , res.get(4));
-		assertEquals(false, res.get(3));
-		
-		assertEquals("d", l.getUltimoCaractere());
+		assertEquals(false, res.get(5));
+		assertEquals(true , res.get(6));
+		assertEquals(false, res.get(7));
+		assertEquals(false, res.get(8));
+		assertEquals(true , res.get(9));
+		assertEquals(true , res.get(10));
 	}
 	
 	@Test
@@ -115,12 +114,13 @@ public class TesteLeitor {
 		assertEquals(2, l.getContadorBinario());
 		
 		LinkedList<Boolean> res = l.compactar();
-		assertEquals(3, res.size());
+		assertEquals(5, res.size());
 		assertEquals(false, res.get(0));
 		assertEquals(true , res.get(1));
 		assertEquals(false, res.get(2));
+		assertEquals(false, res.get(3));
+		assertEquals(true , res.get(4));
 		
-		assertEquals("b", l.getUltimoCaractere());
 	}
 	
 	@Test
@@ -129,13 +129,12 @@ public class TesteLeitor {
 		assertEquals(11, l.getContadorBinario());
 		
 		LinkedList<Boolean> res = l.compactar();
-		assertEquals(6*4+4*5, res.size());
+		assertEquals(6*4+5*5, res.size());
 		assertEquals(false, res.get(0));
 		assertEquals(false, res.get(1));
 		assertEquals(false, res.get(2));
 		assertEquals(true, res.get(43));
 		
-		assertEquals("k", l.getUltimoCaractere());
 	}
 
 }

@@ -70,22 +70,19 @@ public class TesteIntegracao {
 		LinkedList<Boolean> listaBitsOriginal = l.compactar();
 		HashMap<Integer, String> binarioCaractereOriginal = l.getBinarioCaracterOriginal();
 		HashMap<Integer, String> binarioCaractereFinalOriginal = l.getBinarioCaractere();
-		String ultimoCaractereOriginal = l.getUltimoCaractere();
 		System.out.println(listaBitsOriginal.size());
-		Escritor e = new Escritor(binarioCaractereOriginal, listaBitsOriginal, ultimoCaractereOriginal);
+		Escritor e = new Escritor(binarioCaractereOriginal, listaBitsOriginal);
 		e.escrever(new File(compactado));
 
 		
 		LeitorCompactado lc = new LeitorCompactado(new File(compactado));
 		LinkedList<Boolean> listaBits = lc.getListaBits();
 		HashMap<Integer, String> binarioCaractere = lc.getBinarioCaractere();
-		String ultimoCaractere = lc.getUltimoCaractere();
 		
 		assertEquals(listaBitsOriginal, listaBits);
 		assertEquals(binarioCaractereOriginal, binarioCaractere);
-		assertEquals(ultimoCaractereOriginal, ultimoCaractere);
 		
-		EscritorDescompactado ec = new EscritorDescompactado(binarioCaractere, listaBits, ultimoCaractere);
+		EscritorDescompactado ec = new EscritorDescompactado(binarioCaractere, listaBits);
 		ec.escrever(new File(descompactado));
 		HashMap<Integer, String> binarioCaractereFinal = ec.getBinarioCaracter();
 		

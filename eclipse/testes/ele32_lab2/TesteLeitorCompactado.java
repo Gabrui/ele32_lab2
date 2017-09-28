@@ -20,7 +20,6 @@ public class TesteLeitorCompactado {
 		String arquivo = "../resultados/testes/tler1";
 		LeitorCompactado l = new LeitorCompactado(new File(arquivo));
 		
-		assertEquals("d", l.getUltimoCaractere());
 		assertEquals(4, l.getContadorBinario());
 		
 		LinkedList<Boolean> res = l.getListaBits();
