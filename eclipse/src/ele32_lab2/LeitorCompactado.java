@@ -18,11 +18,12 @@ public class LeitorCompactado {
 	private HashMap<String, Integer> caractereBinario;
 	private LinkedList<Boolean> listaBits;
 	private int contadorBinario;
+	private boolean representaBinario = false;
 	
 	public LeitorCompactado(File arquivo) throws IOException {
 		binarioCaracter = new HashMap<Integer, String>();
 		caractereBinario = new HashMap<String, Integer>();
-		listaBits = new LinkedList<>();
+		
 		contadorBinario = 0;
 
 		FileInputStream ins = new FileInputStream(arquivo.getPath());
@@ -35,14 +36,36 @@ public class LeitorCompactado {
 		// Lê um byte que é o resto
 		int resto = ins.read();
 		
+		if (quantBytes != 0) {
 		// Lê o dicionário inicial
-		byte[] simbolos = new byte[quantBytes];
-		ins.read(simbolos);
-		String s = new String(simbolos, Charset.forName(Principal.CODIFICACAO));
-		OfInt a = s.codePoints().iterator();
-		while (a.hasNext())
-			acrescentaString(new String(Character.toChars(a.next())));
+			byte[] simbolos = new byte[quantBytes];
+			ins.read(simbolos);
+			String s = new String(simbolos, Charset.forName(Principal.CODIFICACAO));
+			OfInt a = s.codePoints().iterator();
+			while (a.hasNext())
+				acrescentaString(new String(Character.toChars(a.next())));
+		} else {
+			representaBinario = true;
+			acrescentaString("0");
+			acrescentaString("1");
+		}
+		
+		
+		listaBits = lerBits(ins, resto);
+		
+	}
 
+
+	/**
+	 * Lê sequenciamente bits e fecha o arquivo.
+	 * @param ins
+	 * @param resto O resto de bits em um arquivo, varia de 0 a 7 bits.
+	 * @return A lista de bits lida
+	 * @throws IOException
+	 */
+	public static LinkedList<Boolean> lerBits(FileInputStream ins, int resto) throws IOException {
+		LinkedList<Boolean> listaBits = new LinkedList<>();
+		
 		// Gera uma lista de booleans
 		int lido = ins.read();
 		int ultLido = ins.read();
@@ -57,6 +80,8 @@ public class LeitorCompactado {
 			listaBits.add( (lido & (1<<i)) != 0);
 		
 		ins.close();
+		
+		return listaBits;
 	}
 	
 	
@@ -68,6 +93,10 @@ public class LeitorCompactado {
 	
 	public int getContadorBinario() {
 		return contadorBinario;
+	}
+	
+	public boolean isRepresentacaoBinaria() {
+		return representaBinario;
 	}
 	
 	

@@ -28,6 +28,15 @@ public class Escritor {
 	}
 	
 	/**
+	 * Para a representação binária
+	 * @param listaBits
+	 */
+	public Escritor(LinkedList<Boolean> listaBits) {
+		this.binarioCaracterOriginal = new HashMap<>();
+		this.listaBits = listaBits;
+	}
+	
+	/**
 	 * -------- CABEÇALHO
 	 * Primeiro escreve um int que representa a quantidade de bytes que a lista de simbolos ocupa,
 	 * 		isto é, todos os simbolos em ordem crescente.
@@ -51,12 +60,20 @@ public class Escritor {
 		// Escreve a quantidade de bits
 		int quantBits = listaBits.size();
 		int resto = quantBits % 8;
-		int qB = quantBits - resto;
 		saida.write((8-resto)%8); // É a quantidade de bits inúteis
 		
 		// Escreve os simbolos em ordem crescente a partir de zero
 		for (int i = 0; i<quantTipos; i++)
 			saida.write(binarioCaracterOriginal.get(i).getBytes(Charset.forName(Principal.CODIFICACAO)));
+		
+		escreveArquivoBinario(saida, listaBits);
+	}
+
+	
+	public static void escreveArquivoBinario(FileOutputStream saida, LinkedList<Boolean> listaBits) throws IOException {
+		int quantBits = listaBits.size();
+		int resto = quantBits % 8;
+		int qB = quantBits - resto;
 		
 		// Escreve os bits, foi otimizado, precisa ser melhor?
 		int qBytes = qB/8;

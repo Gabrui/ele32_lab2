@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -23,6 +24,12 @@ public class EscritorDescompactado {
 	public EscritorDescompactado(HashMap<Integer, String> binarioCaracterOriginal, LinkedList<Boolean> listaBits) {
 		this.binarioCaracterOriginal = binarioCaracterOriginal;
 		this.binarioCaracter = (HashMap<Integer, String>) this.binarioCaracterOriginal.clone();
+		this.listaBits = listaBits;
+		this.iterador = this.listaBits.listIterator();
+	}
+	
+
+	public EscritorDescompactado(LinkedList<Boolean> listaBits) {
 		this.listaBits = listaBits;
 		this.iterador = this.listaBits.listIterator();
 	}
@@ -62,6 +69,51 @@ public class EscritorDescompactado {
 		}
 		
 		saida.close();
+	}
+	
+	/**
+	 * Escreve no arquivo o resultado da descompactação em binário
+	 * @param arquivo
+	 * @throws IOException
+	 */
+	@SuppressWarnings("unchecked")
+	public void escreverBinario(File arquivo) throws IOException {
+		HashMap<Integer, LinkedList<Boolean>> dic = new HashMap<>();
+		dic.put(0, new LinkedList<Boolean>(Arrays.asList(false)));
+		dic.put(1, new LinkedList<Boolean>(Arrays.asList(true)));
+		
+		int quant = dic.size();
+		int endereco = 0;
+		
+		LinkedList<Boolean> penultimo;
+		LinkedList<Boolean> ultimo = new LinkedList<>();
+		
+		LinkedList<Boolean> saida = new LinkedList<>();
+		
+		if (iterador.hasNext()) {
+			endereco = lerBits(Leitor.quantosBitsRepresenta(quant-1));
+			ultimo = (LinkedList<Boolean>) dic.get(endereco).clone();
+			saida.addAll(ultimo);
+			quant++;
+		}
+		
+		while(iterador.hasNext()) {
+			endereco = lerBits(Leitor.quantosBitsRepresenta(quant-1));
+			penultimo = ultimo;
+			ultimo = (LinkedList<Boolean>) dic.get(endereco).clone();
+			if (ultimo == null) {
+				ultimo = penultimo;
+				ultimo.add(penultimo.getFirst());
+				dic.put(quant-1, ultimo);
+			} else {
+				penultimo.add(ultimo.getFirst());
+				dic.put(quant-1, penultimo);
+			}
+			saida.addAll(ultimo);
+			quant++;
+		}
+		
+		Escritor.escreveArquivoBinario(new FileOutputStream(arquivo.getPath()), saida);
 	}
 	
 	/**

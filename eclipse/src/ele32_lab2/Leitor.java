@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -94,6 +96,43 @@ public class Leitor {
 		input.close();
 		
 		return lista;
+	}
+	
+	/**
+	 * Compacta utilizando um dicionário em binário
+	 * @return Uma lista de booleans que representam os bits
+	 * @throws IOException
+	 */
+	public LinkedList<Boolean> compactarBinario() throws IOException {
+		LinkedList<Boolean> compactados = new LinkedList<Boolean>();
+		LinkedList<Boolean> entrada = LeitorCompactado.lerBits(
+				new FileInputStream(arquivo.getPath()), 0);
+		HashMap<LinkedList<Boolean>, Integer> dic = new HashMap<>();
+		dic.put(new LinkedList<Boolean>(Arrays.asList(false)), 0);
+		dic.put(new LinkedList<Boolean>(Arrays.asList(true)), 1);
+		
+		Iterator<Boolean> i = entrada.iterator();
+		boolean ultimoBitLido;
+		LinkedList<Boolean> contido;
+		LinkedList<Boolean> aumentado;
+		while (i.hasNext()) {
+			ultimoBitLido = i.next();
+			aumentado = new LinkedList<Boolean>(Arrays.asList(ultimoBitLido));
+			contido = new LinkedList<Boolean>();
+			while (dic.containsKey(aumentado)) {
+				contido.add(ultimoBitLido);
+				if (i.hasNext()) {
+					ultimoBitLido = i.next();
+					aumentado.add(ultimoBitLido);
+				}
+			}
+			compactados.addAll(escreveBinario(dic.get(contido), 
+				     quantosBitsRepresenta(dic.size()-1)));
+			if (i.hasNext())
+				dic.put(aumentado, dic.size());
+		}
+		
+		return compactados;
 	}
 	
 	
