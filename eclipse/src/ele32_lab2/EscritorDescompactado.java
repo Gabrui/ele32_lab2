@@ -123,10 +123,10 @@ public class EscritorDescompactado {
 		
 		while(iterador.hasNext()) {
 			endereco = lerBits(Leitor.quantosBitsRepresenta(quant-1));
-			penultimo = ultimo;
-			ultimo = (LinkedList<Boolean>) dic.get(endereco).clone();
+			penultimo = (LinkedList<Boolean>) ultimo.clone();
+			ultimo = dic.get(endereco);
 			if (ultimo == null) {
-				ultimo = penultimo;
+				ultimo = (LinkedList<Boolean>) penultimo.clone();
 				ultimo.add(penultimo.getFirst());
 				dic.put(quant-1, ultimo);
 			} else {
