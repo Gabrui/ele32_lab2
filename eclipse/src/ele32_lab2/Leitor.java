@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Lê o arquivo original, a ser compactado, gerando seu hashmap e lista de
@@ -16,12 +17,15 @@ import java.util.LinkedList;
  */
 public class Leitor {
 	
+	private HashMap<Integer, Integer> caractereIndice;
+	private HashMap<Integer, Integer> indiceCaractere;
 	private HashMap<Integer, String> binarioCaracter;	
 	private HashMap<String, Integer> caractereBinario;
 	private HashMap<Integer, String> binarioCaracterOriginal;	
 	private HashMap<String, Integer> caractereBinarioOriginal;
+	private LinkedList<Integer> arquivoLido;
 	private int tamanhoMaximoDic = Integer.MAX_VALUE;
-	private int contadorBinario;
+	private int contadorBinario = 0;
 
 
 	private File arquivo;
@@ -35,7 +39,9 @@ public class Leitor {
 		this.arquivo = arquivo;
 		binarioCaracter = new HashMap<Integer, String>();
 		caractereBinario = new HashMap<String, Integer>();
-		contadorBinario = 0;
+		arquivoLido = new LinkedList<>();
+		caractereIndice = new HashMap<>();
+		indiceCaractere = new HashMap<>();
 		inicializarDics();
 	}
 	
@@ -43,21 +49,27 @@ public class Leitor {
 		this.tamanhoMaximoDic = maximo;
 	}
 	
+	
+	
 	// Faz uma leitura inicial do arquivo, para saber quais caracteres ele tem
 	private void inicializarDics() throws IOException {
 		FileInputStream ins = new FileInputStream(arquivo.getPath());
 		InputStreamReader input = new InputStreamReader(ins, Principal.CODIFICACAO);
 		int letraInt = input.read();
-		String letra = "";
+		String letra = ""; //APAGAR
 		while (letraInt != -1) {
-			letra = new String(Character.toChars(letraInt));
-			if (!caractereBinario.containsKey(letra)) {
-				acrescentaString(letra);
+			arquivoLido.add(letraInt);
+			letra = new String(Character.toChars(letraInt)); //APAGAR
+			if (!caractereIndice.containsKey(letraInt)) {
+				caractereIndice.put(letraInt, caractereIndice.size());
+				indiceCaractere.put(indiceCaractere.size(), letraInt);
+				acrescentaString(letra); //APAGAR
 			}
+			
 			letraInt = input.read(); 
 		}
-		caractereBinarioOriginal = getCaractereBinario();
-		binarioCaracterOriginal = getBinarioCaractere();
+		caractereBinarioOriginal = getCaractereBinario(); //APAGAR
+		binarioCaracterOriginal = getBinarioCaractere(); //APAGAR
 		input.close();
 	}
 
@@ -74,10 +86,12 @@ public class Leitor {
 	 * @throws IOException
 	 */
 	public LinkedList<Boolean> compactar() throws IOException {
+		/*
 		LinkedList<Boolean> lista = new LinkedList<Boolean>();
 		//HashMap<String, Integer> caractereBinario = getBinarioCaractere();
 		FileInputStream ins = new FileInputStream(arquivo.getPath());
 		InputStreamReader input = new InputStreamReader(ins, Principal.CODIFICACAO);
+		
 		int letraInt = input.read();
 		String contido = "";
 		String ultimaLetraLida = "";
@@ -104,6 +118,15 @@ public class Leitor {
 		input.close();
 		
 		return lista;
+		*/
+		
+		HashMap<List<Integer>, Integer> listaIndice = new HashMap<List<Integer>, Integer>();
+		for (int i=0; i < contadorBinario; i++)
+			listaIndice.put(new LinkedList<Integer>(Arrays.asList(indiceCaractere.get(i))), i);
+		LinkedList<Boolean> resposta = (LinkedList<Boolean>) compactarObjetos(
+										listaIndice, arquivoLido.iterator(), tamanhoMaximoDic);
+		return resposta;
+		
 	}
 	
 	private void reiniciaDicionarios() {
@@ -155,38 +178,36 @@ public class Leitor {
 	 * @return Uma lista de booleans que representam os bits
 	 * @throws IOException
 	 */
-	/*
-	private LinkedList<Object> compactarObjetos(HashMap<LinkedList<Object>, Integer> dicOriginal, ) {
+	@SuppressWarnings("unchecked")
+	public static <T> List<Boolean> compactarObjetos
+	(HashMap<List<T>, Integer> dicAlteravel, Iterator<T> entrada, int tamanhoMaximoDic) {
+		HashMap<List<T>, Integer> dicOriginal = (HashMap<List<T>, Integer>) dicAlteravel.clone();
 		LinkedList<Boolean> compactados = new LinkedList<Boolean>();
-		LinkedList<Boolean> entrada = LeitorCompactado.lerBits(
-				new FileInputStream(arquivo.getPath()), 0);
-		HashMap<LinkedList<Boolean>, Integer> dic = new HashMap<>();
-		dic.put(new LinkedList<Boolean>(Arrays.asList(false)), 0);
-		dic.put(new LinkedList<Boolean>(Arrays.asList(true)), 1);
-		
-		Iterator<Boolean> i = entrada.iterator();
-		boolean ultimoBitLido;
-		LinkedList<Boolean> contido;
-		LinkedList<Boolean> aumentado;
-		while (i.hasNext()) {
-			ultimoBitLido = i.next();
-			aumentado = new LinkedList<Boolean>(Arrays.asList(ultimoBitLido));
-			contido = new LinkedList<Boolean>();
-			while (dic.containsKey(aumentado)) {
-				contido.add(ultimoBitLido);
-				if (i.hasNext()) {
-					ultimoBitLido = i.next();
-					aumentado.add(ultimoBitLido);
+		LinkedList<T> contido = new LinkedList<T>();
+		LinkedList<T> aumentado;
+		T ultimoLido = null;
+		if (entrada.hasNext())
+			ultimoLido = entrada.next();
+		while (entrada.hasNext()) {
+			aumentado = new LinkedList<T>();
+			aumentado.add(ultimoLido);
+			contido.clear();
+			while (dicAlteravel.containsKey(aumentado)) {
+				contido.add(ultimoLido);
+				if (entrada.hasNext()) {
+					ultimoLido = entrada.next();
+					aumentado.add(ultimoLido);
 				}
 			}
-			compactados.addAll(escreveBinario(dic.get(contido), 
-				     quantosBitsRepresenta(dic.size()-1)));
-			if (i.hasNext())
-				dic.put(aumentado, dic.size());
+			compactados.addAll(escreveBinario(dicAlteravel.get(contido), 
+				     quantosBitsRepresenta(dicAlteravel.size()-1)));
+			if (entrada.hasNext())
+				dicAlteravel.put(aumentado, dicAlteravel.size());
+			if (dicAlteravel.size() >= tamanhoMaximoDic)
+				dicAlteravel = (HashMap<List<T>, Integer>) dicOriginal.clone();
 		}
-		
 		return compactados;
-	}*/
+	}
 	
 	
 	/**
