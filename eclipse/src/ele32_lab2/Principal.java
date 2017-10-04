@@ -5,6 +5,7 @@ import java.io.IOException;
 
 public class Principal {
 	public static final String CODIFICACAO = "UTF-8";
+	
 
 
 	public static void main(String[] args) throws IOException {

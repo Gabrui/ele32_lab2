@@ -85,8 +85,6 @@ public class Leitor {
 			ultimaLetraLida = new String(Character.toChars(letraInt));
 			aumentado = ultimaLetraLida;
 			contido = aumentado;
-			if (contadorBinario >= tamanhoMaximoDic)
-				reiniciaDicionarios();
 			while (caractereBinario.containsKey(aumentado)) {
 				contido = aumentado;
 				letraInt = input.read();
@@ -99,6 +97,8 @@ public class Leitor {
 				     quantosBitsRepresenta(contadorBinario-1)));
 			if (letraInt != -1)
 				acrescentaString(aumentado);
+			if (contadorBinario >= tamanhoMaximoDic)
+				reiniciaDicionarios();
 		}
 		input.close();
 		
@@ -106,9 +106,9 @@ public class Leitor {
 	}
 	
 	private void reiniciaDicionarios() {
-		contadorBinario = 0;
 		caractereBinario = getCaractereBinarioOriginal();
 		binarioCaracter = getBinarioCaracterOriginal();
+		contadorBinario = caractereBinario.size();
 	}
 
 	/**
@@ -200,13 +200,15 @@ public class Leitor {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public HashMap<Integer, String> getBinarioCaracterOriginal() {
-		return binarioCaracterOriginal;
+		return (HashMap<Integer, String>) binarioCaracterOriginal.clone();
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public HashMap<String, Integer> getCaractereBinarioOriginal() {
-		return caractereBinarioOriginal;
+		return (HashMap<String, Integer>)  caractereBinarioOriginal.clone();
 	}
 
 }

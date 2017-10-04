@@ -25,7 +25,6 @@ public class EscritorDescompactado {
 	
 	public EscritorDescompactado(HashMap<Integer, String> binarioCaracterOriginal, LinkedList<Boolean> listaBits) {
 		this.binarioCaracterOriginal = binarioCaracterOriginal;
-		reiniciaDicionarios();
 		this.listaBits = listaBits;
 		this.iterador = this.listaBits.listIterator();
 	}
@@ -41,9 +40,22 @@ public class EscritorDescompactado {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void reiniciaDicionarios() {
+	private String reiniciaDicionarios() {
 		this.contadorBinario = binarioCaracterOriginal.size();
 		this.binarioCaracter = (HashMap<Integer, String>) this.binarioCaracterOriginal.clone();
+		String ultimo = "";
+		if (iterador.hasNext()) {
+			int endereco = lerBits(Leitor.quantosBitsRepresenta(contadorBinario-1));
+			ultimo = binarioCaracter.get(endereco);
+			
+			if (ultimo == null) {
+				System.out.println(endereco);
+				System.out.println(contadorBinario-1);
+			}
+			
+			contadorBinario++;
+		}
+		return ultimo;
 	}
 	
 	/**
@@ -58,27 +70,26 @@ public class EscritorDescompactado {
 		String ultimo = "";
 		String penultimo;
 		
-		if (iterador.hasNext()) {
-			endereco = lerBits(Leitor.quantosBitsRepresenta(contadorBinario-1));
-			ultimo = binarioCaracter.get(endereco);
-			saida.write(ultimo);
-			contadorBinario++;
-		}
+		ultimo = reiniciaDicionarios();
+		saida.write(ultimo);
 		
 		while(iterador.hasNext()) {
-			endereco = lerBits(Leitor.quantosBitsRepresenta(contadorBinario-1));
-			penultimo = ultimo;
-			ultimo = binarioCaracter.get(endereco);
-			if (ultimo == null) {
-				ultimo = penultimo + primeiroChar(penultimo);
-				binarioCaracter.put(contadorBinario-1, ultimo);
+			if (contadorBinario >= tamanhoMaximoDic) {
+				ultimo = reiniciaDicionarios();
+				saida.write(ultimo);
 			} else {
-				binarioCaracter.put(contadorBinario-1, penultimo + primeiroChar(ultimo));
+				endereco = lerBits(Leitor.quantosBitsRepresenta(contadorBinario-1));
+				penultimo = ultimo;
+				ultimo = binarioCaracter.get(endereco);
+				if (ultimo == null) {
+					ultimo = penultimo + primeiroChar(penultimo);
+					binarioCaracter.put(contadorBinario-1, ultimo);
+				} else {
+					binarioCaracter.put(contadorBinario-1, penultimo + primeiroChar(ultimo));
+				}
+				saida.write(ultimo);
+				contadorBinario++;
 			}
-			saida.write(ultimo);
-			contadorBinario++;
-			if (contadorBinario >= tamanhoMaximoDic)
-				reiniciaDicionarios();
 		}
 		
 		saida.close();
