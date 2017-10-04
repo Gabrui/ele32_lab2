@@ -19,11 +19,13 @@ public class EscritorDescompactado {
 	private HashMap<Integer, String> binarioCaracter;
 	private LinkedList<Boolean> listaBits;
 	private ListIterator<Boolean> iterador;
+	private int tamanhoMaximoDic = Integer.MAX_VALUE;
+	private int contadorBinario = 0;
 
-	@SuppressWarnings("unchecked")
+	
 	public EscritorDescompactado(HashMap<Integer, String> binarioCaracterOriginal, LinkedList<Boolean> listaBits) {
 		this.binarioCaracterOriginal = binarioCaracterOriginal;
-		this.binarioCaracter = (HashMap<Integer, String>) this.binarioCaracterOriginal.clone();
+		reiniciaDicionarios();
 		this.listaBits = listaBits;
 		this.iterador = this.listaBits.listIterator();
 	}
@@ -34,6 +36,16 @@ public class EscritorDescompactado {
 		this.iterador = this.listaBits.listIterator();
 	}
 	
+	public void setTamanhoMaximoDic(int maximo) {
+		this.tamanhoMaximoDic = maximo;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void reiniciaDicionarios() {
+		this.contadorBinario = binarioCaracterOriginal.size();
+		this.binarioCaracter = (HashMap<Integer, String>) this.binarioCaracterOriginal.clone();
+	}
+	
 	/**
 	 * Escreve no arquivo o resultado da descompactação, altera o dicionário, não chamar duas vezes.
 	 * @param arquivo
@@ -42,30 +54,31 @@ public class EscritorDescompactado {
 	public void escrever(File arquivo) throws IOException {
 		OutputStreamWriter saida = new OutputStreamWriter(new FileOutputStream(arquivo.getPath()), Principal.CODIFICACAO);
 		
-		int quant = binarioCaracter.size();
 		int endereco = 0;
 		String ultimo = "";
 		String penultimo;
 		
 		if (iterador.hasNext()) {
-			endereco = lerBits(Leitor.quantosBitsRepresenta(quant-1));
+			endereco = lerBits(Leitor.quantosBitsRepresenta(contadorBinario-1));
 			ultimo = binarioCaracter.get(endereco);
 			saida.write(ultimo);
-			quant++;
+			contadorBinario++;
 		}
 		
 		while(iterador.hasNext()) {
-			endereco = lerBits(Leitor.quantosBitsRepresenta(quant-1));
+			endereco = lerBits(Leitor.quantosBitsRepresenta(contadorBinario-1));
 			penultimo = ultimo;
 			ultimo = binarioCaracter.get(endereco);
 			if (ultimo == null) {
 				ultimo = penultimo + primeiroChar(penultimo);
-				binarioCaracter.put(quant-1, ultimo);
+				binarioCaracter.put(contadorBinario-1, ultimo);
 			} else {
-				binarioCaracter.put(quant-1, penultimo + primeiroChar(ultimo));
+				binarioCaracter.put(contadorBinario-1, penultimo + primeiroChar(ultimo));
 			}
 			saida.write(ultimo);
-			quant++;
+			contadorBinario++;
+			if (contadorBinario >= tamanhoMaximoDic)
+				reiniciaDicionarios();
 		}
 		
 		saida.close();

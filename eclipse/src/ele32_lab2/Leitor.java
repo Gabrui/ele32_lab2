@@ -19,6 +19,7 @@ public class Leitor {
 	private HashMap<String, Integer> caractereBinario;
 	private HashMap<Integer, String> binarioCaracterOriginal;	
 	private HashMap<String, Integer> caractereBinarioOriginal;
+	private int tamanhoMaximoDic = Integer.MAX_VALUE;
 	private int contadorBinario;
 
 
@@ -35,6 +36,10 @@ public class Leitor {
 		caractereBinario = new HashMap<String, Integer>();
 		contadorBinario = 0;
 		inicializarDics();
+	}
+	
+	public void setTamanhoMaximoDic(int maximo) {
+		this.tamanhoMaximoDic = maximo;
 	}
 	
 	// Faz uma leitura inicial do arquivo, para saber quais caracteres ele tem
@@ -80,6 +85,8 @@ public class Leitor {
 			ultimaLetraLida = new String(Character.toChars(letraInt));
 			aumentado = ultimaLetraLida;
 			contido = aumentado;
+			if (contadorBinario >= tamanhoMaximoDic)
+				reiniciaDicionarios();
 			while (caractereBinario.containsKey(aumentado)) {
 				contido = aumentado;
 				letraInt = input.read();
@@ -98,6 +105,12 @@ public class Leitor {
 		return lista;
 	}
 	
+	private void reiniciaDicionarios() {
+		contadorBinario = 0;
+		caractereBinario = getCaractereBinarioOriginal();
+		binarioCaracter = getBinarioCaracterOriginal();
+	}
+
 	/**
 	 * Compacta utilizando um dicionário em binário
 	 * @return Uma lista de booleans que representam os bits
