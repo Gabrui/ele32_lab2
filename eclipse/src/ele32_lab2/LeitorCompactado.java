@@ -3,6 +3,7 @@ package ele32_lab2;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -29,9 +30,7 @@ public class LeitorCompactado {
 		FileInputStream ins = new FileInputStream(arquivo.getPath());
 		
 		// Lê um inteiro que representa a quantidade de bytes
-		byte[] inteiro = new byte[4];
-		ins.read(inteiro);
-		int quantBytes = (inteiro[0]<<24) | (inteiro[1]<<16) | (inteiro[2]<<8) | inteiro[3];
+		int quantBytes = leInteiro(ins);
 
 		// Lê um byte que é o resto
 		int resto = ins.read();
@@ -53,6 +52,13 @@ public class LeitorCompactado {
 		
 		listaBits = lerBits(ins, resto);
 		
+	}
+
+
+	public static int leInteiro(FileInputStream ins) throws IOException {
+		byte[] inteiro = new byte[4];
+		ins.read(inteiro);
+		return ByteBuffer.wrap(inteiro).getInt();
 	}
 
 

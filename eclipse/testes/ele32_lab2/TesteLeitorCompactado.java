@@ -3,6 +3,7 @@ package ele32_lab2;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -14,9 +15,16 @@ public class TesteLeitorCompactado {
 	@Before
 	public void setUp() throws Exception {
 	}
+	
+	@Test
+	public void testaLeituraInteiro() throws IOException {
+		FileInputStream ins = new FileInputStream("../resultados/testes/chinesCompac");
+		assertEquals(9463, LeitorCompactado.leInteiro(ins));
+		ins.close();
+	}
 
 	@Test
-	public void test() throws IOException {
+	public void testeGeral() throws IOException {
 		String arquivo = "../resultados/testes/tler1";
 		LeitorCompactado l = new LeitorCompactado(new File(arquivo));
 		

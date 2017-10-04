@@ -64,13 +64,22 @@ public class TesteIntegracao {
 		
 		compactarDescompactar(original, compactado, descompactado);
 	}
+	
+	@Test
+	public void testeChines() throws IOException {
+		String original = "../textos/testes/chines";
+		String compactado = "../resultados/testes/chinesCompac";
+		String descompactado = "../resultados/testes/chines";
+		
+		compactarDescompactar(original, compactado, descompactado);
+	}
 
 	private void compactarDescompactar(String original, String compactado, String descompactado) throws IOException {
 		Leitor l = new Leitor(new File(original));
 		LinkedList<Boolean> listaBitsOriginal = l.compactar();
 		HashMap<Integer, String> binarioCaractereOriginal = l.getBinarioCaracterOriginal();
 		HashMap<Integer, String> binarioCaractereFinalOriginal = l.getBinarioCaractere();
-		System.out.println(listaBitsOriginal.size());
+		//System.out.println(listaBitsOriginal.size());
 		Escritor e = new Escritor(binarioCaractereOriginal, listaBitsOriginal);
 		e.escrever(new File(compactado));
 
