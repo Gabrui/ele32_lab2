@@ -118,33 +118,39 @@ public class Leitor {
 	 * @throws FileNotFoundException 
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unchecked")
 	public LinkedList<Boolean> compactarBinario() throws IOException {
 		LinkedList<Boolean> compactados = new LinkedList<Boolean>();
 		LinkedList<Boolean> entrada = LeitorCompactado.lerBits(
 				new FileInputStream(arquivo.getPath()), 0);
+		System.out.println("Bits Lidos");
 		HashMap<LinkedList<Boolean>, Integer> dic = new HashMap<>();
 		dic.put(new LinkedList<Boolean>(Arrays.asList(false)), 0);
 		dic.put(new LinkedList<Boolean>(Arrays.asList(true)), 1);
 		
 		Iterator<Boolean> i = entrada.iterator();
 		boolean ultimoBitLido;
-		LinkedList<Boolean> contido;
-		LinkedList<Boolean> aumentado;
+		LinkedList<Boolean> aumentado = new LinkedList<Boolean>();
+		boolean continua = true;
+
+		ultimoBitLido = i.next();
 		while (i.hasNext()) {
-			ultimoBitLido = i.next();
-			aumentado = new LinkedList<Boolean>(Arrays.asList(ultimoBitLido));
-			contido = new LinkedList<Boolean>();
-			while (dic.containsKey(aumentado)) {
-				contido.add(ultimoBitLido);
+			aumentado.clear();
+			aumentado.addLast(ultimoBitLido);
+			while (dic.containsKey(aumentado) && continua) {
 				if (i.hasNext()) {
 					ultimoBitLido = i.next();
 					aumentado.add(ultimoBitLido);
+				} else {
+					continua = false;
 				}
 			}
-			compactados.addAll(escreveBinario(dic.get(contido), 
+			if (continua) {
+				dic.put( (LinkedList<Boolean>) aumentado.clone(), dic.size());
+				aumentado.removeLast();
+			}
+			compactados.addAll(escreveBinario(dic.get(aumentado), 
 				     quantosBitsRepresenta(dic.size()-1)));
-			if (i.hasNext())
-				dic.put(aumentado, dic.size());
 		}
 		
 		return compactados;

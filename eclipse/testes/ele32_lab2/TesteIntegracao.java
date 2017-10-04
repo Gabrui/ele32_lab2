@@ -172,5 +172,43 @@ public class TesteIntegracao {
 		
 		assertEquals(esperado, resultado);
 	}
+	
+	
+	@Test
+	public void testeABCDBinario() throws IOException {
+		String original = "../textos/testes/abcd";
+		String compactado = "../resultados/testes/abcdCompacBin";
+		String descompactado = "../resultados/testes/abcdBin";
+		
+		compactarDescompactarBinario(original, compactado, descompactado);
+	}
+	
+	private void compactarDescompactarBinario(String original, String compactado, String descompactado) throws IOException {
+		Leitor l = new Leitor(new File(original));
+		System.out.println("Compactando");
+		LinkedList<Boolean> listaBitsOriginal = l.compactarBinario();
+		
+		Escritor e = new Escritor(listaBitsOriginal);
+		e.escrever(new File(compactado));
+
+		System.out.println("Escrevendo");
+		
+		LeitorCompactado lc = new LeitorCompactado(new File(compactado));
+		assertTrue(lc.isRepresentacaoBinaria());
+		System.out.println("Descompactando");
+		LinkedList<Boolean> listaBits = lc.getListaBits();
+		
+		assertEquals(listaBitsOriginal, listaBits);
+		
+		EscritorDescompactado ec = new EscritorDescompactado(listaBits);
+		System.out.println("Escrevendo");
+		ec.escreverBinario(new File(descompactado));
+		
+		
+		String esperado = new String(Files.readAllBytes(Paths.get(original)));
+		String resultado = new String(Files.readAllBytes(Paths.get(descompactado)));
+		
+		assertEquals(esperado, resultado);
+	}
 
 }
