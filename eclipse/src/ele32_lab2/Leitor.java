@@ -87,7 +87,7 @@ public class Leitor {
 	 * @throws IOException
 	 */
 	public LinkedList<Boolean> compactar() throws IOException {
-		/*
+		
 		LinkedList<Boolean> lista = new LinkedList<Boolean>();
 		//HashMap<String, Integer> caractereBinario = getBinarioCaractere();
 		FileInputStream ins = new FileInputStream(arquivo.getPath());
@@ -119,15 +119,15 @@ public class Leitor {
 		input.close();
 		
 		return lista;
-		*/
 		
+		/*
 		HashMap<List<Integer>, Integer> listaIndice = new HashMap<List<Integer>, Integer>();
 		for (int i=0; i < contadorBinario; i++)
 			listaIndice.put(new LinkedList<Integer>(Arrays.asList(indiceCaractere.get(i))), i);
 		LinkedList<Boolean> resposta = (LinkedList<Boolean>) compactarObjetos(
 										listaIndice, arquivoLido.iterator(), tamanhoMaximoDic);
 		return resposta;
-		
+		*/
 	}
 	
 	private void reiniciaDicionarios() {
