@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+
 /**
  * Lê o arquivo original, a ser compactado, gerando seu hashmap e lista de
  * bits (booleans)
@@ -123,7 +124,7 @@ public class Leitor {
 		LinkedList<Boolean> compactados = new LinkedList<Boolean>();
 		LinkedList<Boolean> entrada = LeitorCompactado.lerBits(
 				new FileInputStream(arquivo.getPath()), 0);
-		System.out.println("Bits Lidos");
+		
 		HashMap<LinkedList<Boolean>, Integer> dic = new HashMap<>();
 		dic.put(new LinkedList<Boolean>(Arrays.asList(false)), 0);
 		dic.put(new LinkedList<Boolean>(Arrays.asList(true)), 1);
@@ -137,6 +138,8 @@ public class Leitor {
 		while (i.hasNext()) {
 			aumentado.clear();
 			aumentado.addLast(ultimoBitLido);
+			if (!dic.containsKey(aumentado))
+				throw new RuntimeException("Não existe no dicionario");
 			while (dic.containsKey(aumentado) && continua) {
 				if (i.hasNext()) {
 					ultimoBitLido = i.next();

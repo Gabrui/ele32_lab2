@@ -136,5 +136,48 @@ public class TesteLeitor {
 		assertEquals(true, res.get(43));
 		
 	}
+	
+	
+	@Test
+	public void testeUnitarioLeituraBinaria() throws IOException {
+		Leitor l = new Leitor(new File("../textos/testes/testeUnitario"));
+		LinkedList<Boolean> res = l.compactarBinario();
+		assertEquals(14, res.size());
+		assertEquals(false, res.get(0));
+		assertEquals(false, res.get(1));
+		assertEquals(true, res.get(2));
+		assertEquals(false, res.get(3));
+		assertEquals(true, res.get(4));
+		assertEquals(false, res.get(5));
+		assertEquals(false, res.get(6));
+		assertEquals(false, res.get(7));
+		assertEquals(true, res.get(8));
+		assertEquals(false, res.get(9));
+		assertEquals(true, res.get(10));
+		assertEquals(false, res.get(11));
+		assertEquals(true, res.get(12));
+		assertEquals(false, res.get(13));
+	}
+	
+	@Test
+	public void testeUnitarioLeituraAnalogoBinaria() throws IOException {
+		Leitor l = new Leitor(new File("../textos/testes/testeUnitarioAnalogoBinario"));
+		LinkedList<Boolean> res = l.compactar();
+		assertEquals(14, res.size());
+		assertEquals(false, res.get(0));
+		assertEquals(false, res.get(1));
+		assertEquals(true, res.get(2));
+		assertEquals(false, res.get(3));
+		assertEquals(true, res.get(4));
+		assertEquals(false, res.get(5));
+		assertEquals(false, res.get(6));
+		assertEquals(false, res.get(7));
+		assertEquals(true, res.get(8));
+		assertEquals(false, res.get(9));
+		assertEquals(true, res.get(10));
+		assertEquals(false, res.get(11));
+		assertEquals(true, res.get(12));
+		assertEquals(false, res.get(13));
+	}
 
 }
